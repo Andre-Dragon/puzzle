@@ -1,5 +1,6 @@
 - var values = new Array(16).fill(0).map((_item, index) => index + 1);
 
-.app__puzzle
+.app__puzzle#app__puzzle
   each val in values
-    button.app__puzzle--btn.item=val
+    button.app__puzzle--btn
+      span.app__puzzle--item=val
