@@ -7,9 +7,13 @@ html(lang="ru")
         link(rel="stylesheet" href="/css/reset.css")
         link(rel="stylesheet" href="/css/index.css")
     body
+        - var values = new Array(16).fill(0).map((_item, index) => index + 1);
         .wrapper
             .app
                 h1.app__title «Пятнашки»
-                include sections/puzzle
+                .app__puzzle#app__puzzle
+                    each val in values
+                        button.app__puzzle--btn(data-matrix-id=val)
+                            span.app__puzzle--item=val
                 button.app__shuffle#app__shuffle Перемешать
         script(src="/js/index.js")
