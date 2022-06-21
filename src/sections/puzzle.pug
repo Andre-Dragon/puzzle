@@ -2,5 +2,5 @@
 
 .app__puzzle#app__puzzle
   each val in values
-    button.app__puzzle--btn
+    button.app__puzzle--btn(data-matrix-id=val)
       span.app__puzzle--item=val

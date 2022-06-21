@@ -8,6 +8,11 @@ html
 	line-height normal;
     background rgb(26, 54, 26);
     color rgb(250, 255, 175);
+    -ms-user-select none;
+    -moz-user-select none;
+    -webkit-user-select none;
+    user-select none;
+    -webkit-tap-highlight-color transparent;
 }
 .wrapper
 {
@@ -19,7 +24,6 @@ html
     min-height 100vh;
     margin 0 auto;
     padding 2rem;
-    user-select none;
 }
 .app
 {
@@ -42,7 +46,20 @@ html
         padding-bottom 100%;
         margin 2rem 0;
         background rgb(250, 255, 175);
+        box-shadow 0 0 2px rgb(250, 255, 175);
         position relative;
+    }
+
+    &__puzzle.won 
+    {
+        .app__puzzle--btn 
+        {
+            color rgb(255, 0, 106);
+        }
+        .app__puzzle--item
+        {
+            box-shadow inset 0 0 6px rgb(255, 0, 106);
+        }
     }
 
     &__puzzle--btn 
@@ -55,8 +72,9 @@ html
         font 2rem 'Playfair Display', serif;
         font-weight 400;
         background rgb(9, 17, 1);
-        color rgb(250, 255, 175);
-        box-shadow inset 0 0 2px rgba(252, 192, 27, .6);
+        color rgb(252, 192, 27);
+        box-shadow inset 0 0 2px rgb(250, 255, 175);
+        transition: transform .5s;
     }
 
     &__puzzle--item 
@@ -67,7 +85,7 @@ html
         width 80%;
         height 80%;
         margin 10%;
-        box-shadow inset 0 0 4px rgba(252, 192, 27, .6);
+        box-shadow inset 0 0 6px rgb(252, 192, 27);
     }
 
     &__shuffle
