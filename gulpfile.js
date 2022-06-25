@@ -39,7 +39,7 @@ function stylus() {
         .pipe(gulpStylus({
             'include css': true
         }))
-        .pipe(gulpCleanCSS())
+        .pipe(gulpif(isProduction, gulpCleanCSS()))
         .pipe(gulp.dest(outputDir))
         .pipe(gulpif(!isProduction, gulpConnect.reload()));
 }
@@ -57,7 +57,7 @@ function svg() {
             }
         }))
         .on('error', function(error) {
-            console.log(error)
+            console.log(error);
         })
         .pipe(gulp.dest(outputDir));
 }
@@ -70,7 +70,8 @@ function pug() {
                 require: require
             };
         }))
-        .pipe(gulpPug())
+        .pipe(gulpif(!isProduction, gulpPug({ pretty: true })))
+        .pipe(gulpif(isProduction, gulpPug({ pretty: false })))
         .pipe(gulp.dest(outputDir))
         .pipe(gulpif(!isProduction, gulpConnect.reload()));
 }

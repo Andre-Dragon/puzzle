@@ -10,8 +10,13 @@ const appPuzzle = () => {
   const blankNumber = 16;
   const countItems = 16;
   const countLine = 4;
+  const maxShuffleCount = 50;
 
+  let shuffled = false;
   let matrix = [];
+  let blockedCoords = null;
+  let shuffleCount = null;
+  let timer = null;
 
   const checkCountItems = () => {
     if ($itemsNodes.length < countItems) {
@@ -56,10 +61,10 @@ const appPuzzle = () => {
 
   const addWonClass = () => {
     if (isWon(matrix)) {
-      setTimeout(() => $appNode.classList.remove('won'), 500);
+      setTimeout(() => $appNode.classList.remove('won'), 70);
     }
     else {
-      setTimeout(() => $appNode.classList.add('won'), 500);
+      setTimeout(() => $appNode.classList.add('won'), 70);
     }
   };
 
@@ -79,6 +84,8 @@ const appPuzzle = () => {
         setNodeStyles(node, x, y);
       }
     }
+
+    addWonClass();
   };
 
   const findCoordinatesByNumber = (number, matrix) => {
@@ -105,8 +112,6 @@ const appPuzzle = () => {
     const tempCoords = matrix[coords01.y][coords01.x];
     matrix[coords01.y][coords01.x] = matrix[coords02.y][coords02.x];
     matrix[coords02.y][coords02.x] = tempCoords;
-
-    addWonClass();
   };
 
   const getСoordinatesNumber = (btnCoords, blankCoords) => {
@@ -118,22 +123,79 @@ const appPuzzle = () => {
     }
   };
 
-  /** Shuffle */
-  const shuffleArray = arr => {
-    return arr
-      .map( value => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+  /** Shuffle-1 or Shuffle-2  */ 
+
+  /** Shuffle-2 */
+  // const shuffleArray = arr => {
+  //   return arr
+  //     .map( value => ({ value, sort: Math.random() }))
+  //     .sort((a, b) => a.sort - b.sort)
+  //     .map(({ value }) => value);
+  // };
+
+  // const clickShuffleItems = () => {
+  //   matrix = getMatrix(shuffleArray(matrix.flat()));
+  //   setPositionItems(matrix);
+  //   addWonClass();
+  // };
+
+  /** Shuffle-2 */
+  const findValidCoords = ({ blankCoords, matrix, blockedCoords }) => {
+    const validCoords = [];
+
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[y].length; x++) {
+        if (isValidForSwap({ x, y }, blankCoords)) {
+          if (!blockedCoords || !(blockedCoords.x === x && blockedCoords.y === y)) {
+            validCoords.push({ x, y });
+          }
+        }
+      }
+    }
+
+    return validCoords;
+  };
+
+  const randomSwap = matrix => {
+    const blankCoords = findCoordinatesByNumber(blankNumber, matrix);
+
+    const validCoords = findValidCoords({ blankCoords, matrix, blockedCoords });
+
+    const swapCoords = validCoords[
+      Math.floor(Math.random() * validCoords.length)
+    ];
+    
+    swapItems(blankCoords, swapCoords, matrix);
+    blockedCoords = blankCoords;
   };
 
   const clickShuffleItems = () => {
-    matrix = getMatrix(shuffleArray(matrix.flat()));
-    setPositionItems(matrix);
-    addWonClass();
+    if (shuffled) return;
+    
+    shuffled = true;
+    shuffleCount = 0;
+    clearInterval(timer);
+    $appNode.classList.add('appShuffle');
+
+    if (shuffleCount === 0) {
+      timer = setInterval(() => {
+        randomSwap(matrix);
+        setPositionItems(matrix);
+
+        shuffleCount += 1;
+
+        if (shuffleCount >= maxShuffleCount) {
+          $appNode.classList.remove('appShuffle');
+          clearInterval(timer);
+          shuffled = false;
+        }
+      }, 70);
+    }
   };
 
   /** Change position by click */
   const clickTargetItems = ({ target }) => {
+    if (shuffled) return;
     const btnNode = target.closest('.app__puzzle--btn');
     if (!btnNode) return;
 
@@ -178,6 +240,7 @@ const appPuzzle = () => {
   };
 
   const clickArrows = event => {
+    if (shuffled) return;
     if (!event.key.includes('Arrow')) return;
     const blankCoords = findCoordinatesByNumber(blankNumber, matrix);
     const btnCoords = { x: blankCoords.x, y: blankCoords.y };
