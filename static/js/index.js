@@ -1,9 +1,11 @@
 'use strict';
 
 const appPuzzle = () => {
+  
   const $appNode = document.getElementById('app__puzzle');
   const $appShuffle = document.getElementById('app__shuffle');
   const $itemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
+  const $preloader = document.querySelector('.preloader');
 
   const winFlatArr = new Array(16).fill(0).map((_item, index) => index + 1);
 
@@ -17,6 +19,12 @@ const appPuzzle = () => {
   let blockedCoords = null;
   let shuffleCount = null;
   let timer = null;
+
+  const removePreloader = () => {
+    if (!$preloader.classList.contains('hide')) {
+      $preloader.classList.add('hide');
+    }
+  };
 
   const checkCountItems = () => {
     if ($itemsNodes.length < countItems) {
@@ -256,6 +264,7 @@ const appPuzzle = () => {
 
   /** Start */
   const init = () => {
+    setTimeout(removePreloader, 3000);
     checkCountItems();
     hideItemsLast();
     const matrixId = checkDatasetItems();
