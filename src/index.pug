@@ -18,7 +18,9 @@ html(lang="ru")
             .container
                 .app
                     h1.app__title «Пятнашки»
-                    .app__puzzle#app__puzzle
+                    .app__total Всего ходов: 
+                        span.app__counter#app__counter 0
+                    .app__puzzle.lock#app__puzzle
                         each val in values
                             button.app__puzzle--btn(data-matrix-id=val)
                                 span.app__puzzle--item=val

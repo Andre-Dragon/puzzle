@@ -4,6 +4,7 @@ const appPuzzle = () => {
   
   const $appNode = document.getElementById('app__puzzle');
   const $appShuffle = document.getElementById('app__shuffle');
+  const $appCounter = document.getElementById('app__counter');
   const $itemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
   const $preloader = document.querySelector('.preloader');
 
@@ -12,13 +13,21 @@ const appPuzzle = () => {
   const blankNumber = 16;
   const countItems = 16;
   const countLine = 4;
-  const maxShuffleCount = 50;
+  const maxShuffleCount = 100;
 
   let shuffled = false;
   let matrix = [];
   let blockedCoords = null;
   let shuffleCount = null;
   let timer = null;
+  let count = 0;
+
+  $appCounter.textContent = count;
+
+  const totalCount = () => {
+    count++;
+    $appCounter.textContent = count;
+  };
 
   const removePreloader = () => {
     if (!$preloader.classList.contains('hide')) {
@@ -69,6 +78,8 @@ const appPuzzle = () => {
 
   const addWonClass = () => {
     if (isWon(matrix)) {
+      count = 0;
+      $appNode.classList.add('lock');
       setTimeout(() => $appNode.classList.remove('won'), 70);
     }
     else {
@@ -126,6 +137,7 @@ const appPuzzle = () => {
     const isValid = isValidForSwap(btnCoords, blankCoords);
   
     if (isValid) {
+      totalCount();
       swapItems(btnCoords, blankCoords, matrix);
       setPositionItems(matrix);
     }
@@ -180,6 +192,10 @@ const appPuzzle = () => {
   const clickShuffleItems = () => {
     if (shuffled) return;
     
+    count = 0;
+    $appCounter.textContent = count;
+    $appNode.classList.remove('lock');
+
     shuffled = true;
     shuffleCount = 0;
     clearInterval(timer);
@@ -224,6 +240,7 @@ const appPuzzle = () => {
       return; 
     }
 
+    totalCount();
     swapItems(btnCoords, blankCoords, matrix);
     setPositionItems(matrix);
   };

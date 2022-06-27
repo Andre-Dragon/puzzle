@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display:wght@400;600&display=swap');
 
 body,
 html 
 {
-    font 16px/1.4 'Playfair Display', serif;
+    font 16px/1.4 'Open Sans', sans-serif;
     font-weight 400;
-	line-height normal;
+	line-height 1.5;
     background rgb(26, 54, 26);
     color rgb(250, 255, 175);
     -ms-user-select none;
@@ -96,6 +96,22 @@ html
         font 2.6rem/1.2 'Playfair Display', serif;
         font-weight 600;
         text-align center;
+        margin-bottom 1rem;
+    }
+
+    &__total
+    {
+        width 100%; 
+        font 1.325rem/1.2 'Open Sans', sans-serif;
+        font-weight 400;
+        text-align center;
+    }
+
+    &__counter 
+    {
+        font-family: 'Playfair Display', serif;
+        font-size 1.8rem;
+        font-weight 600;
     }
 
     &__puzzle
@@ -106,6 +122,24 @@ html
         background rgb(250, 255, 175);
         box-shadow 0 0 2px rgb(250, 255, 175);
         position relative;
+    }
+
+    &__puzzle.lock:before 
+    {
+        content 'Перемешай и кликая по блокам собери пазл из цифр!';
+        position absolute;
+        top 0;
+        left 0;
+        width 80%;
+        height 100%;
+        z-index 1000;
+        background rgba(0, 0, 0, .6);
+        display flex;
+        align-items center;
+        justify-content center;
+        padding 0 10%;
+        font-size 1.125rem;
+        text-align center;
     }
 
     &__puzzle.won 
@@ -148,8 +182,8 @@ html
 
     &__shuffle
     {
-        font 1.2rem/1.4 'Playfair Display', serif;
-        font-weight 600;
+        font 1.2rem/1.4 'Open Sans', sans-serif;
+        font-weight 400;
         padding 0.5rem 1.5rem;
         background rgb(9, 17, 1);
         color rgb(250, 255, 175);
@@ -160,7 +194,7 @@ html
 
         &:before
         {
-            content "";
+            content '';
             width 0%;
             height 100%;
             position absolute;
@@ -177,24 +211,25 @@ html
             width 100%;
         }
     }
-}
-.app .appShuffle:before 
-{
-    content '';
-    position fixed;
-    top 0;
-    left 0;
-    right 0;
-    bottom 0;
-    width 100%;
-    height 100%;
-    z-index 9999;
-    background rgba(0, 0, 0, .5);
 
-    &__puzzle--btn,
-    &__shuffle 
+    & .appShuffle:before 
     {
-        pointer-events: none;
+        content '';
+        position fixed;
+        top 0;
+        left 0;
+        right 0;
+        bottom 0;
+        width 100%;
+        height 100%;
+        z-index 1000;
+        background rgba(0, 0, 0, .5);
+
+        &__puzzle--btn,
+        &__shuffle 
+        {
+            pointer-events: none;
+        }
     }
 }
 

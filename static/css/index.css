@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display:wght@400;600&display=swap");
 body,
 html {
-  font: 16px/1.4 'Playfair Display', serif;
+  font: 16px/1.4 'Open Sans', sans-serif;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.5;
   background: #1a361a;
   color: #faffaf;
   -ms-user-select: none;
@@ -80,6 +80,18 @@ html {
   font: 2.6rem/1.2 'Playfair Display', serif;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 1rem;
+}
+.app__total {
+  width: 100%;
+  font: 1.325rem/1.2 'Open Sans', sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+.app__counter {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 .app__puzzle {
   width: 100%;
@@ -88,6 +100,22 @@ html {
   background: #faffaf;
   box-shadow: 0 0 2px #faffaf;
   position: relative;
+}
+.app__puzzle.lock:before {
+  content: 'Перемешай и кликая по блокам собери пазл из цифр!';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100%;
+  z-index: 1000;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10%;
+  font-size: 1.125rem;
+  text-align: center;
 }
 .app__puzzle.won .app__puzzle--btn {
   color: #ff006a;
@@ -118,8 +146,8 @@ html {
   box-shadow: inset 0 0 6px #fcc01b;
 }
 .app__shuffle {
-  font: 1.2rem/1.4 'Playfair Display', serif;
-  font-weight: 600;
+  font: 1.2rem/1.4 'Open Sans', sans-serif;
+  font-weight: 400;
   padding: 0.5rem 1.5rem;
   background: #091101;
   color: #faffaf;
@@ -129,7 +157,7 @@ html {
   z-index: 1;
 }
 .app__shuffle:before {
-  content: "";
+  content: '';
   width: 0%;
   height: 100%;
   position: absolute;
@@ -152,7 +180,7 @@ html {
   bottom: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
+  z-index: 1000;
   background: rgba(0,0,0,0.5);
 }
 .app .appShuffle:before__puzzle--btn,
