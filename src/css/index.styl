@@ -6,7 +6,7 @@ html
     font 16px/1.4 'Open Sans', sans-serif;
     font-weight 400;
 	line-height 1.5;
-    background rgb(26, 54, 26);
+    background: linear-gradient(90deg, #11053b, #1e0b63, #11053b);
     color rgb(250, 255, 175);
     -ms-user-select none;
     -moz-user-select none;
@@ -32,10 +32,10 @@ html
     width 100%;
     height 100%;
     z-index 9999;
-    background rgb(26, 54, 26);
+    background: linear-gradient(90deg, #11053b, #1e0b63, #11053b);
     visibility visible;
     opacity 1;
-    transition 0.8s;
+    transition 0.5s;
 }
 .loader {
     width 50px;
@@ -93,101 +93,185 @@ html
 
     &__title 
     {
-        font 2.6rem/1.2 'Playfair Display', serif;
+        font 2.5rem/1.2 'Playfair Display', serif;
         font-weight 600;
         text-align center;
         margin-bottom 1rem;
     }
 
+    &__discription
+    {
+        display flex;
+        align-items center;
+        justify-content center;
+        max-width 300px;
+        width 100%;
+        height 28px;
+        position relative;
+    }
+
+    &__rules,
+    &__box 
+    {
+        position absolute;
+        left 0;
+        top 0;
+        width 100%;
+        height 100%;
+        z-index 10;
+        opacity 1;
+        transition 0.5s;
+    }
+
+    &__rules
+    {
+        text-align center;
+    }
+
+    &__box
+    {
+        display flex;
+        align-items center;
+        justify-content space-around;
+        width 100%;
+        height 28px;
+    }
+
     &__total
     {
-        width 100%; 
-        font 1.325rem/1.2 'Open Sans', sans-serif;
+        font 1rem 'Open Sans', sans-serif;
         font-weight 400;
         text-align center;
     }
 
+    &__indicator
+    {
+        display inline-flex;
+        font 1.125rem 'Playfair Display', serif;
+        font-weight 600;
+        line-height 1.6;
+    }
+
     &__counter 
     {
-        font-family: 'Playfair Display', serif;
-        font-size 1.8rem;
-        font-weight 600;
+        width 50px;
+    }
+
+    &__timer
+    {
+        width 86px;
     }
 
     &__puzzle
     {
         width 100%;
         padding-bottom 100%;
-        margin 2rem 0;
+        margin 1.2rem 0;
         background rgb(250, 255, 175);
-        box-shadow 0 0 2px rgb(250, 255, 175);
+        background-position center;
+        box-shadow 0 0 2px rgb(250, 255, 175),
+                    2px 2px 4px rgb(0, 0, 0),
+                    2px -2px 4px rgb(0, 0, 0),
+                    -2px 2px 4px rgb(0, 0, 0),
+                    -2px -2px 4px rgb(0, 0, 0);
         position relative;
     }
 
-    &__puzzle.lock:before 
+    &__puzzle--lock
     {
-        content 'Перемешай и кликая по блокам собери пазл из цифр!';
         position absolute;
         top 0;
         left 0;
-        width 80%;
+        width 100%;
         height 100%;
         z-index 1000;
-        background rgba(0, 0, 0, .6);
+        background rgba(0, 0, 0, .8);
+        display flex;
+        align-content center;
+        justify-content center;
+        flex-wrap: wrap;
+        transition: 0.5s;
+        padding 2%;
+    }
+
+    &__puzzle--box 
+    {
+        width 100%;
+        border 1px solid rgb(250, 255, 175);
+        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+    }
+
+    &__puzzle--header,
+    &__puzzle--current
+    {
         display flex;
         align-items center;
         justify-content center;
-        padding 0 10%;
-        font-size 1.125rem;
+        width 100%;
+        padding 10px 0;
+    }
+
+    &__puzzle--header
+    {
+        border-bottom: 1px solid rgb(250, 255, 175);
+    }
+
+    &__puzzle--name:not(:last-child),
+    &__puzzle--result:not(:last-child)
+    {
+        border-right 1px solid rgb(250, 255, 175);
+    } 
+
+    &__puzzle--name:not(:nth-child(2)),
+    &__puzzle--result:not(:nth-child(2))
+    {
+        flex-basis 38%;
+    }
+
+    &__puzzle--name:nth-child(2),
+    &__puzzle--result:nth-child(2)
+    {
+        min-width: 60px;
+        flex-basis 24%;
+    }
+
+    &__puzzle--name,
+    &__puzzle--result  
+    {
+        font-size 1rem;
         text-align center;
     }
 
-    &__puzzle.won 
+    &__puzzle--name
     {
-        .app__puzzle--btn 
-        {
-            color rgb(255, 0, 106);
-        }
-        .app__puzzle--item
-        {
-            box-shadow inset 0 0 6px rgb(255, 0, 106);
-        }
+        font-weight 600;
     }
 
-    &__puzzle--btn 
+    &__puzzle--main
     {
-        position absolute;
-        top 0;
-        left 0;
-        width 25%;
-        height 25%;
-        font 2rem 'Playfair Display', serif;
+        width 100%;
+    }
+
+    &__puzzle--current:not(:last-child)
+    {
+        border-bottom 1px solid rgb(250, 255, 175);
+    }
+
+    &__puzzle--total
+    {
+        font 1.125rem 'Playfair Display', serif;
+    }
+
+    &__puzzle--shuffle
+    {
+        font 1.125rem/1.4 'Open Sans', sans-serif;
         font-weight 400;
-        background rgb(9, 17, 1);
-        color rgb(252, 192, 27);
-        box-shadow inset 0 0 2px rgb(250, 255, 175);
-        transition: transform .2s;
-    }
-
-    &__puzzle--item 
-    {
-        display flex;
-        align-items center;
-        justify-content center;
-        width 80%;
-        height 80%;
-        margin 10%;
-        box-shadow inset 0 0 6px rgb(252, 192, 27);
-    }
-
-    &__shuffle
-    {
-        font 1.2rem/1.4 'Open Sans', sans-serif;
-        font-weight 400;
-        padding 0.5rem 1.5rem;
-        background rgb(9, 17, 1);
+        margin-top 1.325rem;
+        padding 0.5rem 2rem;
+        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
         color rgb(250, 255, 175);
         border 1px solid rgb(250, 255, 175);
+        border-radius 2px;
         position relative;
         overflow hidden;
         z-index 1;
@@ -202,7 +286,7 @@ html
             left 50%;
             transform translate(-50%,-50%);
             z-index -1;
-            background rgba(252, 192, 27, .4);
+            background: linear-gradient(0deg, #000000, #230b10, #331016, #230b10, #000000);
             transition all .5s ease;
         }
 
@@ -212,31 +296,45 @@ html
         }
     }
 
-    & .appShuffle:before 
+    &__puzzle.won 
     {
-        content '';
-        position fixed;
+        .app__puzzle--item
+        {
+            box-shadow inset 0 0 6px rgb(180, 21, 87);
+        }
+    }
+
+    &__puzzle--btn 
+    {
+        position absolute;
         top 0;
         left 0;
-        right 0;
-        bottom 0;
-        width 100%;
-        height 100%;
-        z-index 1000;
-        background rgba(0, 0, 0, .5);
+        width 25%;
+        height 25%;
+        font 2rem/1.4 'Playfair Display', serif;
+        font-weight 400;
+        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+        color rgb(250, 255, 175);
+        box-shadow inset 0 0 2px rgb(250, 255, 175);
+        transition transform .2s;
+    }
 
-        &__puzzle--btn,
-        &__shuffle 
-        {
-            pointer-events: none;
-        }
+    &__puzzle--item 
+    {
+        display flex;
+        align-items center;
+        justify-content center;
+        width 80%;
+        height 80%;
+        margin 10%;
+        box-shadow inset 0 0 6px rgb(252, 192, 27);
     }
 }
 
 .hide 
 {
-    visibility hidden;
     opacity 0;
+    visibility hidden;
 }
 
 @keyframes loader 

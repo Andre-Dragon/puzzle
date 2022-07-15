@@ -2,14 +2,33 @@
 
 const appPuzzle = () => {
   
+  // game
   const $appNode = document.getElementById('app__puzzle');
+  const $appNodeLock = document.getElementById('app__puzzle--lock');
   const $appShuffle = document.getElementById('app__shuffle');
   const $appCounter = document.getElementById('app__counter');
-  const $itemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
+
+  const $appResultCount = document.getElementById('app__result--count'); 
+  const $appResultTime = document.getElementById('app__result--time'); 
+
+  const $appRecordCount = document.getElementById('app__record--count'); 
+  const $appRecordTime = document.getElementById('app__record--time'); 
+
+  const $appItemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
+  const $appRules = document.querySelector('.app__rules');
+  const $appBox = document.querySelector('.app__box');
+
+  // preloader
   const $preloader = document.querySelector('.preloader');
+
+  // time
+  const $minute = document.getElementById('minute');
+  const $second = document.getElementById('second');
+  const $millisecond = document.getElementById('millisecond');
 
   const winFlatArr = new Array(16).fill(0).map((_item, index) => index + 1);
 
+  // variables
   const blankNumber = 16;
   const countItems = 16;
   const countLine = 4;
@@ -22,7 +41,38 @@ const appPuzzle = () => {
   let timer = null;
   let count = 0;
 
+  let minute = 0;
+  let second = 0;
+  let millisecond = 0;
+  let interval = null;
+  let time = null;
+
   $appCounter.textContent = count;
+
+  /** Reset time */
+  const resetTimer = () => {
+    minute = 0;
+    second = 0;
+    millisecond = 0;
+    $millisecond.textContent = addZero(millisecond);
+    $second.textContent = addZero(second);
+    $minute.textContent = addZero(minute);
+  };
+
+  /** Check result */
+  const recordResult = (step, time) => {
+    $appRecordCount.textContent = step;
+    $appRecordTime.textContent = time;
+  };
+
+  /** Zero */
+  const addZero = n => n < 10 ? '0' + n : n;
+
+  /** Hide */
+  const hide = (elem, name) => elem.classList.add(name);
+
+  /** Show */
+  const show = (elem, name) => elem.classList.remove(name);
 
   const totalCount = () => {
     count++;
@@ -31,21 +81,48 @@ const appPuzzle = () => {
 
   const removePreloader = () => {
     if (!$preloader.classList.contains('hide')) {
-      $preloader.classList.add('hide');
+      hide($preloader, 'hide');
     }
   };
 
   const checkCountItems = () => {
-    if ($itemsNodes.length < countItems) {
+    if ($appItemsNodes.length < countItems) {
       throw new Error(`Должно быть ровно ${countItems} items in HTML`);
     }
   };
 
   const hideItemsLast = () => {
-    $itemsNodes[countItems - 1].style.display = 'none';
+    $appItemsNodes[countItems - 1].style.display = 'none';
   };
 
-  const checkDatasetItems = () => $itemsNodes.map(item => Number(item.dataset.matrixId));
+  const checkDatasetItems = () => $appItemsNodes.map(item => Number(item.dataset.matrixId));
+
+  /** Milliseconds */
+  const timerMilliseconds = () => {
+    if (millisecond > 99) {
+      second++;
+      $second.textContent = addZero(second);
+      millisecond = 0;
+      $millisecond.textContent = addZero(millisecond);
+    }
+    timerSeconds();
+  };
+  /** Seconds */
+  const timerSeconds = () => {
+    if (second > 59) {
+      minute++;
+      $minute.textContent = addZero(minute);
+      second = 0;
+      $second.textContent = addZero(second);
+    }
+  };
+
+  /** Timer */
+  const startTimer = () => {
+    millisecond++;
+    $millisecond.textContent = addZero(millisecond);
+    timerMilliseconds();
+  };
 
   /** Matrix */
   const getMatrix = arr => {
@@ -78,12 +155,19 @@ const appPuzzle = () => {
 
   const addWonClass = () => {
     if (isWon(matrix)) {
-      count = 0;
-      $appNode.classList.add('lock');
-      setTimeout(() => $appNode.classList.remove('won'), 70);
+      clearInterval(interval);
+      time = `${addZero(minute)}:${addZero(second)}:${addZero(millisecond)}`;
+      $appResultCount.textContent = count;
+      $appResultTime.textContent = time;
+      
+      show($appNodeLock, 'hide');
+      hide($appBox, 'hide');
+      show($appRules, 'hide');
+
+      setTimeout(() => show($appNode, 'won'), 70);
     }
     else {
-      setTimeout(() => $appNode.classList.add('won'), 70);
+      setTimeout(() => hide($appNode, 'won'), 70);
     }
   };
 
@@ -98,7 +182,7 @@ const appPuzzle = () => {
     for (let y = 0; y < matrix.length; y++) {
       for (let x = 0; x < matrix[y].length; x++) {
         const value = matrix[y][x];
-        const node = $itemsNodes[value - 1];
+        const node = $appItemsNodes[value - 1];
         
         setNodeStyles(node, x, y);
       }
@@ -194,12 +278,10 @@ const appPuzzle = () => {
     
     count = 0;
     $appCounter.textContent = count;
-    $appNode.classList.remove('lock');
 
     shuffled = true;
     shuffleCount = 0;
     clearInterval(timer);
-    $appNode.classList.add('appShuffle');
 
     if (shuffleCount === 0) {
       timer = setInterval(() => {
@@ -209,11 +291,19 @@ const appPuzzle = () => {
         shuffleCount += 1;
 
         if (shuffleCount >= maxShuffleCount) {
-          $appNode.classList.remove('appShuffle');
+          hide($appNodeLock, 'hide');
+          hide($appRules, 'hide');
+          show($appBox, 'hide');
+
+          resetTimer();
           clearInterval(timer);
+          clearInterval(interval);
+
+          interval = setInterval(startTimer, 10);
           shuffled = false;
+
         }
-      }, 70);
+      }, 20);
     }
   };
 
@@ -287,7 +377,6 @@ const appPuzzle = () => {
     const matrixId = checkDatasetItems();
     matrix = getMatrix(matrixId);
     setPositionItems(matrix);
-    addWonClass();
   };
 
   init();
