@@ -17,6 +17,9 @@ const appPuzzle = () => {
   const $appItemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
   const $appRules = document.querySelector('.app__rules');
   const $appBox = document.querySelector('.app__box');
+  const $appPublick = document.querySelector('.app__puzzle--public');
+  const $appRecord = document.querySelector('.app__record');
+  const $appTime = document.querySelector('.app__record--time');
 
   // preloader
   const $preloader = document.querySelector('.preloader');
@@ -27,6 +30,12 @@ const appPuzzle = () => {
   const $millisecond = document.getElementById('millisecond');
 
   const winFlatArr = new Array(16).fill(0).map((_item, index) => index + 1);
+
+  const data = {
+    count: 0,
+    time: '00:00:00',
+    ms: 0
+  };
 
   // variables
   const blankNumber = 16;
@@ -39,15 +48,13 @@ const appPuzzle = () => {
   let blockedCoords = null;
   let shuffleCount = null;
   let timer = null;
-  let count = 0;
 
   let minute = 0;
   let second = 0;
   let millisecond = 0;
   let interval = null;
-  let time = null;
 
-  $appCounter.textContent = count;
+  $appCounter.textContent = data.count;
 
   /** Reset time */
   const resetTimer = () => {
@@ -59,29 +66,38 @@ const appPuzzle = () => {
     $minute.textContent = addZero(minute);
   };
 
+  const timeWonGame = () => `${addZero(minute)}:${addZero(second)}:${addZero(millisecond)}`;
+
   /** Check result */
-  const recordResult = (step, time) => {
-    $appRecordCount.textContent = step;
-    $appRecordTime.textContent = time;
+  const recordResult = () => {
+    const storage = JSON.parse(localStorage.getItem('data'));
+    $appRecordCount.textContent = storage.count;
+    $appRecordTime.textContent = storage.time;
   };
 
   /** Zero */
   const addZero = n => n < 10 ? '0' + n : n;
 
   /** Hide */
-  const hide = (elem, name) => elem.classList.add(name);
+  const addClass = (elem, name) => elem.classList.add(name);
 
   /** Show */
-  const show = (elem, name) => elem.classList.remove(name);
+  const removeClass = (elem, name) => elem.classList.remove(name);
+
+  const notificationRecord = text => {
+    $appPublick.textContent = text;
+    addClass($appPublick, 'open');
+    setTimeout(() => removeClass($appPublick, 'open'), 5000);
+  };
 
   const totalCount = () => {
-    count++;
-    $appCounter.textContent = count;
+    data.count++;
+    $appCounter.textContent = data.count;
   };
 
   const removePreloader = () => {
     if (!$preloader.classList.contains('hide')) {
-      hide($preloader, 'hide');
+      addClass($preloader, 'hide');
     }
   };
 
@@ -96,6 +112,27 @@ const appPuzzle = () => {
   };
 
   const checkDatasetItems = () => $appItemsNodes.map(item => Number(item.dataset.matrixId));
+
+  const removeDisabled = () => {
+    if (!!$appShuffle.getAttribute('disabled')) {
+      $appShuffle.removeAttribute('disabled');
+    }
+  };
+
+  const removeNotificationRecord = () => {
+    if ($appPublick.classList.contains('open')) {
+      removeClass($appPublick, 'open');
+    }
+  };
+
+  const removeAnimateOpacity = () => {
+    if ($appRecord.classList.contains('animate-opacity')) {
+      removeClass($appRecord, 'animate-opacity');
+    }
+    if ($appTime.classList.contains('animate-opacity')) {
+      removeClass($appTime, 'animate-opacity');
+    } 
+  };
 
   /** Milliseconds */
   const timerMilliseconds = () => {
@@ -153,21 +190,72 @@ const appPuzzle = () => {
     return true;
   };
 
+  const checkingGetItem = () => {
+    const storage = JSON.parse(localStorage.getItem('data'));
+
+    if (data.count > 0 && storage.count === 0) {
+      localStorage.setItem('data', JSON.stringify(data));
+      recordResult();
+      notificationRecord('Рекорд установлен!');
+      addClass($appRecord, 'animate-opacity');
+    }
+
+    if (data.count !== 0 && data.count < storage.count) {
+      localStorage.setItem('data', JSON.stringify(data));
+      recordResult();
+      notificationRecord('Новый рекорд!');
+      addClass($appRecord, 'animate-opacity');
+    }
+
+    if (data.count >= storage.count && storage.count > 0) {
+      notificationRecord('Рекорд не побит!');
+    }
+
+    if (data.count === storage.count && data.ms < storage.ms) {
+      localStorage.setItem('data', JSON.stringify(data));
+      recordResult();
+      notificationRecord('Время улучшено!');
+      addClass($appTime, 'animate-opacity');
+    }
+  };
+
+  const checkingLocalStorage = () => {
+    if (localStorage.length < 1) {
+      localStorage.setItem('data', JSON.stringify(data));
+      recordResult();
+    }
+
+    if (localStorage.length >= 1) {
+      recordResult();
+      
+      if (!!localStorage.getItem('data')) {
+        checkingGetItem();
+      }
+    }
+  };
+
   const addWonClass = () => {
     if (isWon(matrix)) {
-      clearInterval(interval);
-      time = `${addZero(minute)}:${addZero(second)}:${addZero(millisecond)}`;
-      $appResultCount.textContent = count;
-      $appResultTime.textContent = time;
-      
-      show($appNodeLock, 'hide');
-      hide($appBox, 'hide');
-      show($appRules, 'hide');
 
-      setTimeout(() => show($appNode, 'won'), 70);
+      data.time = timeWonGame();
+      data.ms = (s => 1E1 * s[2] + 1E3 * s[1] + 6E4 * s[0])(data.time.split(':'));
+
+      checkingLocalStorage();
+      removeDisabled();
+
+      clearInterval(interval);
+  
+      $appResultCount.textContent = data.count;
+      $appResultTime.textContent = data.time;
+      
+      removeClass($appNodeLock, 'hide');
+      addClass($appBox, 'hide');
+      removeClass($appRules, 'hide');
+
+      setTimeout(() => removeClass($appNode, 'won'), 70);
     }
     else {
-      setTimeout(() => hide($appNode, 'won'), 70);
+      setTimeout(() => addClass($appNode, 'won'), 70);
     }
   };
 
@@ -177,8 +265,8 @@ const appPuzzle = () => {
     node.style.transform = `translate3D(${x * shiftPs}%, ${y * shiftPs}%, 0)`;
   };
 
-
   const setPositionItems = matrix => {
+
     for (let y = 0; y < matrix.length; y++) {
       for (let x = 0; x < matrix[y].length; x++) {
         const value = matrix[y][x];
@@ -273,37 +361,45 @@ const appPuzzle = () => {
     blockedCoords = blankCoords;
   };
 
+  const startingGame = () => {
+    timer = setInterval(() => {
+      randomSwap(matrix);
+      setPositionItems(matrix);
+      $appShuffle.setAttribute('disabled', true);
+
+      shuffleCount += 1;
+      
+      if (shuffleCount >= maxShuffleCount) {
+        addClass($appNodeLock, 'hide');
+        addClass($appRules, 'hide');
+        removeClass($appBox, 'hide');
+
+        resetTimer();
+        clearInterval(timer);
+        clearInterval(interval);
+
+        interval = setInterval(startTimer, 10);
+        shuffled = false;
+      }
+    }, 20);
+  };
+
   const clickShuffleItems = () => {
     if (shuffled) return;
-    
-    count = 0;
-    $appCounter.textContent = count;
 
     shuffled = true;
     shuffleCount = 0;
+
+    data.count = 0;
+    $appCounter.textContent = data.count;
+
+    removeNotificationRecord();
+    removeAnimateOpacity();
+    
     clearInterval(timer);
 
     if (shuffleCount === 0) {
-      timer = setInterval(() => {
-        randomSwap(matrix);
-        setPositionItems(matrix);
-
-        shuffleCount += 1;
-
-        if (shuffleCount >= maxShuffleCount) {
-          hide($appNodeLock, 'hide');
-          hide($appRules, 'hide');
-          show($appBox, 'hide');
-
-          resetTimer();
-          clearInterval(timer);
-          clearInterval(interval);
-
-          interval = setInterval(startTimer, 10);
-          shuffled = false;
-
-        }
-      }, 20);
+      startingGame();
     }
   };
 

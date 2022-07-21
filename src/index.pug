@@ -32,25 +32,27 @@ html(lang="ru")
                                     span.app__timer--millisecond#millisecond 00
             
                     .app__puzzle#app__puzzle
-                        each val in values
-                            button.app__puzzle--btn(data-matrix-id=val)
-                                span.app__puzzle--item=val
+                            .app__puzzle--overlay
+                                each val in values
+                                    button.app__puzzle--btn(data-matrix-id=val)
+                                        span.app__puzzle--item=val
 
-                        .app__puzzle--lock#app__puzzle--lock 
-                            .app__puzzle--box
-                                .app__puzzle--header 
-                                    .app__puzzle--name Результат
-                                    .app__puzzle--name Ходов
-                                    .app__puzzle--name Время
-                                .app__puzzle--main
-                                    .app__puzzle--current 
-                                        .app__puzzle--result Текущий
-                                        .app__puzzle--result.app__puzzle--total#app__result--count 0
-                                        .app__puzzle--result.app__puzzle--total#app__result--time 00:00:00
-                                    .app__puzzle--current 
-                                        .app__puzzle--result Рекорд
-                                        .app__puzzle--result.app__puzzle--total#app__record--count 0
-                                        .app__puzzle--result.app__puzzle--total#app__record--time 00:00:00
-                            button.app__puzzle--shuffle#app__shuffle Начать
+                                .app__puzzle--lock#app__puzzle--lock 
+                                    .app__puzzle--box
+                                        .app__puzzle--header 
+                                            .app__puzzle--name Результат
+                                            .app__puzzle--name Ходов
+                                            .app__puzzle--name Время
+                                        .app__puzzle--main
+                                            .app__puzzle--current 
+                                                .app__puzzle--result Текущий
+                                                .app__puzzle--result.app__puzzle--total#app__result--count 0
+                                                .app__puzzle--result.app__puzzle--total#app__result--time 00:00:00
+                                            .app__puzzle--current.app__record
+                                                .app__puzzle--result Рекорд
+                                                .app__puzzle--result.app__puzzle--total#app__record--count 0
+                                                .app__puzzle--result.app__puzzle--total.app__record--time#app__record--time 00:00:00
+                                    button.app__puzzle--shuffle#app__shuffle Играть
+                            .app__puzzle--public Новый рекорд
 
         script(src="./js/index.js")
