@@ -20,6 +20,15 @@ const appPuzzle = () => {
   const $appPublick = document.querySelector('.app__puzzle--public');
   const $appRecord = document.querySelector('.app__record');
   const $appTime = document.querySelector('.app__record--time');
+  const $appActual = document.querySelector('.app__actual');
+
+  // audio
+  const $validAudio = new Audio('./audio/valid.mp3');
+  const $noValidAudio = new Audio('./audio/no-valid.mp3');
+  const $wonAudio = new Audio('./audio/won.mp3');
+  const $recordAudio = new Audio('./audio/record.mp3');
+  const $startAudio = new Audio('./audio/start.mp3');
+
 
   // preloader
   const $preloader = document.querySelector('.preloader');
@@ -33,8 +42,10 @@ const appPuzzle = () => {
 
   const data = {
     count: 0,
+    maxCount: 9999,
     time: '00:00:00',
-    ms: 0
+    ms: 0,
+    limit: 3599990,
   };
 
   // variables
@@ -75,6 +86,16 @@ const appPuzzle = () => {
     $appRecordTime.textContent = storage.time;
   };
 
+  const noValidClick = () => {
+    if (window.navigator && window.navigator.vibrate) {
+      navigator.vibrate(100);
+      audioPlay($noValidAudio);
+    }
+    else {
+      audioPlay($noValidAudio);
+    }
+  };
+
   /** Zero */
   const addZero = n => n < 10 ? '0' + n : n;
 
@@ -91,8 +112,10 @@ const appPuzzle = () => {
   };
 
   const totalCount = () => {
-    data.count++;
-    $appCounter.textContent = data.count;
+    if (data.count < data.maxCount) {
+      data.count++;
+      $appCounter.textContent = data.count;
+    }
   };
 
   const removePreloader = () => {
@@ -125,25 +148,26 @@ const appPuzzle = () => {
     }
   };
 
-  const removeAnimateOpacity = () => {
-    if ($appRecord.classList.contains('animate-opacity')) {
-      removeClass($appRecord, 'animate-opacity');
-    }
-    if ($appTime.classList.contains('animate-opacity')) {
-      removeClass($appTime, 'animate-opacity');
-    } 
+  const removeAnimateOpacity = items => {
+    items.forEach(item => {
+      if (item.classList.contains('animate-opacity')) {
+        removeClass(item, 'animate-opacity');
+      }
+    });
   };
 
-  /** Milliseconds */
-  const timerMilliseconds = () => {
-    if (millisecond > 99) {
-      second++;
-      $second.textContent = addZero(second);
-      millisecond = 0;
-      $millisecond.textContent = addZero(millisecond);
+  const audioPlay = audio => audio.play();
+
+  const resetCurrentTime = elem => elem.currentTime = 0;
+
+  /** Minutes */
+  const clearTimer = () => {
+    if (minute === 59 && second === 59 && millisecond === 99) {
+      clearInterval(interval);
+      init();
     }
-    timerSeconds();
   };
+
   /** Seconds */
   const timerSeconds = () => {
     if (second > 59) {
@@ -152,7 +176,20 @@ const appPuzzle = () => {
       second = 0;
       $second.textContent = addZero(second);
     }
+
+    clearTimer();
   };
+
+    /** Milliseconds */
+    const timerMilliseconds = () => {
+      if (millisecond > 99) {
+        second++;
+        $second.textContent = addZero(second);
+        millisecond = 0;
+        $millisecond.textContent = addZero(millisecond);
+      }
+      timerSeconds();
+    };
 
   /** Timer */
   const startTimer = () => {
@@ -190,6 +227,17 @@ const appPuzzle = () => {
     return true;
   };
 
+  const limitTimeGame = () => {
+    if (data.ms === data.limit) {
+      notificationRecord('Лимит по времени исчерпан!');
+      addClass($appActual, 'animate-opacity');
+      resetTimer();
+      data.count = 0;
+      data.time = '00:00:00';
+      audioPlay($wonAudio);
+    }
+  };
+
   const checkingGetItem = () => {
     const storage = JSON.parse(localStorage.getItem('data'));
 
@@ -198,6 +246,7 @@ const appPuzzle = () => {
       recordResult();
       notificationRecord('Рекорд установлен!');
       addClass($appRecord, 'animate-opacity');
+      audioPlay($recordAudio);
     }
 
     if (data.count !== 0 && data.count < storage.count) {
@@ -205,10 +254,13 @@ const appPuzzle = () => {
       recordResult();
       notificationRecord('Новый рекорд!');
       addClass($appRecord, 'animate-opacity');
+      audioPlay($recordAudio);
     }
 
     if (data.count >= storage.count && storage.count > 0) {
       notificationRecord('Рекорд не побит!');
+      addClass($appActual, 'animate-opacity');
+      audioPlay($wonAudio);
     }
 
     if (data.count === storage.count && data.ms < storage.ms) {
@@ -216,10 +268,13 @@ const appPuzzle = () => {
       recordResult();
       notificationRecord('Время улучшено!');
       addClass($appTime, 'animate-opacity');
+      audioPlay($recordAudio);
     }
   };
 
   const checkingLocalStorage = () => {
+    limitTimeGame();
+
     if (localStorage.length < 1) {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
@@ -244,6 +299,7 @@ const appPuzzle = () => {
       removeDisabled();
 
       clearInterval(interval);
+      resetCurrentTime($wonAudio);
   
       $appResultCount.textContent = data.count;
       $appResultTime.textContent = data.time;
@@ -310,8 +366,14 @@ const appPuzzle = () => {
   
     if (isValid) {
       totalCount();
+      resetCurrentTime($validAudio);
+      audioPlay($validAudio);
       swapItems(btnCoords, blankCoords, matrix);
       setPositionItems(matrix);
+    }
+    else {
+      resetCurrentTime($noValidAudio);
+      noValidClick();
     }
   };
 
@@ -394,11 +456,13 @@ const appPuzzle = () => {
     $appCounter.textContent = data.count;
 
     removeNotificationRecord();
-    removeAnimateOpacity();
+    removeAnimateOpacity([$appRecord, $appTime, $appActual]);
     
     clearInterval(timer);
 
     if (shuffleCount === 0) {
+      resetCurrentTime($startAudio);
+      audioPlay($startAudio);
       startingGame();
     }
   };
@@ -467,7 +531,6 @@ const appPuzzle = () => {
 
   /** Start */
   const init = () => {
-    setTimeout(removePreloader, 3000);
     checkCountItems();
     hideItemsLast();
     const matrixId = checkDatasetItems();
@@ -475,6 +538,7 @@ const appPuzzle = () => {
     setPositionItems(matrix);
   };
 
+  setTimeout(removePreloader, 2000);
   init();
 };
 

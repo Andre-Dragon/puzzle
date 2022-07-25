@@ -3,7 +3,26 @@ html(lang="ru")
     head
         meta(charset="utf-8")
         title Puzzle
+
+        link(rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png")
+        link(rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png")
+        link(rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png")
+        link(rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png")
+        link(rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png")
+        link(rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png")
+        link(rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png")
+        link(rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png")
+        link(rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png")
+        link(rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png")
+        link(rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png")
+        link(rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png")
+        link(rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png")
+
+        meta(name="msapplication-TileColor" content="#ffffff")
+        meta(name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png")
+        meta(name="theme-color" content="ffffff")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        
         link(rel="stylesheet" href="./css/reset.css")
         link(rel="stylesheet" href="./css/index.css")
     body
@@ -32,27 +51,29 @@ html(lang="ru")
                                     span.app__timer--millisecond#millisecond 00
             
                     .app__puzzle#app__puzzle
-                            .app__puzzle--overlay
-                                each val in values
-                                    button.app__puzzle--btn(data-matrix-id=val)
-                                        span.app__puzzle--item=val
+                        .app__puzzle--overlay
+                            each val in values
+                                button.app__puzzle--btn(data-matrix-id=val)
+                                    span.app__puzzle--item=val
 
-                                .app__puzzle--lock#app__puzzle--lock 
-                                    .app__puzzle--box
-                                        .app__puzzle--header 
-                                            .app__puzzle--name Результат
-                                            .app__puzzle--name Ходов
-                                            .app__puzzle--name Время
-                                        .app__puzzle--main
-                                            .app__puzzle--current 
+                            .app__puzzle--lock#app__puzzle--lock 
+                                .app__puzzle--box
+                                    .app__puzzle--header 
+                                        .app__puzzle--name Результат
+                                        .app__puzzle--name Ходов
+                                        .app__puzzle--name Время
+                                    .app__puzzle--main
+                                        .app__puzzle--current
+                                            .app__puzzle--wrap.app__actual
                                                 .app__puzzle--result Текущий
                                                 .app__puzzle--result.app__puzzle--total#app__result--count 0
                                                 .app__puzzle--result.app__puzzle--total#app__result--time 00:00:00
-                                            .app__puzzle--current.app__record
+                                        .app__puzzle--current
+                                            .app__puzzle--wrap.app__record
                                                 .app__puzzle--result Рекорд
                                                 .app__puzzle--result.app__puzzle--total#app__record--count 0
                                                 .app__puzzle--result.app__puzzle--total.app__record--time#app__record--time 00:00:00
-                                    button.app__puzzle--shuffle#app__shuffle Играть
-                            .app__puzzle--public Новый рекорд
+                                button.app__puzzle--shuffle#app__shuffle Играть
+                        .app__puzzle--public Новый рекорд
 
         script(src="./js/index.js")

@@ -6,7 +6,7 @@ html
     font 16px/1.4 'Open Sans', sans-serif;
     font-weight 400;
 	line-height 1.5;
-    background: linear-gradient(90deg, #11053b, #1e0b63, #11053b);
+    background: linear-gradient(90deg, rgb(17, 5, 59), rgb(30, 11, 99), rgb(17, 5, 59));
     color rgb(250, 255, 175);
     -ms-user-select none;
     -moz-user-select none;
@@ -32,7 +32,7 @@ html
     width 100%;
     height 100%;
     z-index 9999;
-    background: linear-gradient(90deg, #11053b, #1e0b63, #11053b);
+    background: linear-gradient(90deg, rgb(17, 5, 59), rgb(30, 11, 99), rgb(17, 5, 59));
     visibility visible;
     opacity 1;
     transition 0.5s;
@@ -213,11 +213,11 @@ html
     {
         width 100%;
         border 1px solid rgb(250, 255, 175);
-        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+        background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
     }
 
     &__puzzle--header,
-    &__puzzle--current
+    &__puzzle--wrap
     {
         display flex;
         align-items center;
@@ -280,11 +280,11 @@ html
 
     &__puzzle--shuffle
     {
-        font 1.125rem/1.4 'Open Sans', sans-serif;
+        font 1.125rem/1.4 'Playfair Display', serif;
         font-weight 400;
         margin-top 1.325rem;
         padding 0.5rem 2rem;
-        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+        background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
         border 1px solid rgb(250, 255, 175);
         border-radius 2px;
@@ -302,7 +302,7 @@ html
             left 50%;
             transform translate(-50%,-50%);
             z-index -1;
-            background: linear-gradient(0deg, #000000, #230b10, #331016, #230b10, #000000);
+            background: linear-gradient(0deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
             transition all .5s ease;
         }
 
@@ -329,7 +329,7 @@ html
         height 25%;
         font 2rem/1.4 'Playfair Display', serif;
         font-weight 400;
-        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+        background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
         box-shadow inset 0 0 2px rgb(250, 255, 175);
         transition transform .2s;
@@ -353,8 +353,8 @@ html
         left 0;
         z-index 0;
         width 100%;
-        height 40px;
-        background: linear-gradient(90deg, #000000, #230b10, #331016, #230b10, #000000);
+        height 44px;
+        background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         display flex;
         align-items center;
         justify-content center;
@@ -363,9 +363,15 @@ html
 
     &__puzzle--public.open
     {
-        transform: translateY(46px);
+        transform: translateY(54px);
+        box-shadow 0 0 2px rgb(250, 255, 175),
+            2px 2px 2px rgb(51, 16, 22),
+            2px -2px 2px rgb(51, 16, 22),
+            -2px 2px 2px rgb(51, 16, 22),
+            -2px -2px 2px rgb(51, 16, 22);
     }
 
+    &__actual.animate-opacity,
     &__record.animate-opacity,
     &__record--time.animate-opacity
     {
@@ -417,7 +423,7 @@ html
     50% 
     { 
         transform translate(-50px, 0); 
-        border-color #EE4D68; 
+        border-color rgb(238, 77, 104); 
     }
 }
 
@@ -430,7 +436,7 @@ html
     50% 
     { 
         transform translate(50px, 0); 
-        border-color #875678; 
+        border-color rgb(135, 86, 120); 
     }
 }
 
@@ -442,7 +448,7 @@ html
     50% 
     { 
         transform:translate(0, -50px); 
-        border-color #FF9900; 
+        border-color rgb(255, 153, 0); 
     }
 }
 
@@ -455,7 +461,7 @@ html
     50% 
     { 
         transform translate(0, 50px); 
-        border-color #00E4F6; 
+        border-color rgb(0, 228, 246); 
     } 
 }
 

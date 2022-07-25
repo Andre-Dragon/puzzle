@@ -2,9 +2,12 @@ const gulp = require('gulp');
 const gulpConnect = require('gulp-connect');
 const gulpUglify = require('gulp-uglify');
 const gulpPug = require('gulp-pug');
+const babel = require('gulp-babel');
 const gulpImageMin = require('gulp-imagemin');
 const gulpData = require('gulp-data');
 const gulpStylus = require('gulp-stylus');
+const sourcemaps = require('gulp-sourcemaps');
+const autoprefixer = require('gulp-autoprefixer');
 const gulpif = require('gulp-if');
 const gulpCleanCSS = require('gulp-clean-css');
 const plumber = require('gulp-plumber');
@@ -39,6 +42,20 @@ function stylus() {
         .pipe(gulpStylus({
             'include css': true
         }))
+        .pipe(sourcemaps.init())
+        .pipe(autoprefixer({
+            overrideBrowserslist: 
+            [
+                'Android >= 4',
+                'Chrome >= 20',
+                'Firefox >= 24',
+                'Explorer >= 11',
+                'iOS >= 6',
+                'Opera >= 12',
+                'Safari >= 6',
+            ]
+        }))
+        .pipe(sourcemaps.write())
         .pipe(gulpif(isProduction, gulpCleanCSS()))
         .pipe(gulp.dest(outputDir))
         .pipe(gulpif(!isProduction, gulpConnect.reload()));
@@ -85,6 +102,11 @@ function images() {
 
 function js() {
     return gulp.src(srcJS)
+        .pipe(sourcemaps.init())
+        .pipe(sourcemaps.write())
+        .pipe(babel({
+			presets: ['@babel/env']
+		}))
         .pipe(gulpif(isProduction, gulpUglify()))
         .pipe(gulp.dest(outputDir))
         .pipe(gulpif(!isProduction, gulpConnect.reload()));
