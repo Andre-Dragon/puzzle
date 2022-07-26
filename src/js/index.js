@@ -15,12 +15,13 @@ const appPuzzle = () => {
   const $appRecordTime = document.getElementById('app__record--time'); 
 
   const $appItemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
-  const $appRules = document.querySelector('.app__rules');
-  const $appBox = document.querySelector('.app__box');
-  const $appPublick = document.querySelector('.app__puzzle--public');
-  const $appRecord = document.querySelector('.app__record');
-  const $appTime = document.querySelector('.app__record--time');
-  const $appActual = document.querySelector('.app__actual');
+  const $appShuffleElem = document.querySelector('.app__puzzle--shuffle');
+  const $appRulesElem = document.querySelector('.app__rules');
+  const $appBoxElem = document.querySelector('.app__box');
+  const $appPublickElem = document.querySelector('.app__puzzle--public');
+  const $appRecordElem = document.querySelector('.app__record');
+  const $appTimeElem = document.querySelector('.app__record--time');
+  const $appActualElem = document.querySelector('.app__actual');
 
   // audio
   const $validAudio = new Audio('./audio/valid.mp3');
@@ -106,9 +107,9 @@ const appPuzzle = () => {
   const removeClass = (elem, name) => elem.classList.remove(name);
 
   const notificationRecord = text => {
-    $appPublick.textContent = text;
-    addClass($appPublick, 'open');
-    setTimeout(() => removeClass($appPublick, 'open'), 5000);
+    $appPublickElem.textContent = text;
+    addClass($appPublickElem, 'open');
+    setTimeout(() => removeClass($appPublickElem, 'open'), 5000);
   };
 
   const totalCount = () => {
@@ -130,6 +131,11 @@ const appPuzzle = () => {
     }
   };
 
+  const animateShuffleButton = () => {
+    addClass($appShuffleElem, 'animate-btn');
+    setTimeout(() => { removeClass($appShuffleElem, 'animate-btn') }, 1150);
+  };
+
   const hideItemsLast = () => {
     $appItemsNodes[countItems - 1].style.display = 'none';
   };
@@ -143,8 +149,8 @@ const appPuzzle = () => {
   };
 
   const removeNotificationRecord = () => {
-    if ($appPublick.classList.contains('open')) {
-      removeClass($appPublick, 'open');
+    if ($appPublickElem.classList.contains('open')) {
+      removeClass($appPublickElem, 'open');
     }
   };
 
@@ -230,7 +236,7 @@ const appPuzzle = () => {
   const limitTimeGame = () => {
     if (data.ms === data.limit) {
       notificationRecord('Лимит по времени исчерпан!');
-      addClass($appActual, 'animate-opacity');
+      addClass($appActualElem, 'animate-opacity');
       resetTimer();
       data.count = 0;
       data.time = '00:00:00';
@@ -245,7 +251,7 @@ const appPuzzle = () => {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Рекорд установлен!');
-      addClass($appRecord, 'animate-opacity');
+      addClass($appRecordElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
 
@@ -253,13 +259,13 @@ const appPuzzle = () => {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Новый рекорд!');
-      addClass($appRecord, 'animate-opacity');
+      addClass($appRecordElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
 
     if (data.count >= storage.count && storage.count > 0) {
       notificationRecord('Рекорд не побит!');
-      addClass($appActual, 'animate-opacity');
+      addClass($appActualElem, 'animate-opacity');
       audioPlay($wonAudio);
     }
 
@@ -267,7 +273,7 @@ const appPuzzle = () => {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Время улучшено!');
-      addClass($appTime, 'animate-opacity');
+      addClass($appTimeElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
   };
@@ -305,8 +311,8 @@ const appPuzzle = () => {
       $appResultTime.textContent = data.time;
       
       removeClass($appNodeLock, 'hide');
-      addClass($appBox, 'hide');
-      removeClass($appRules, 'hide');
+      addClass($appBoxElem, 'hide');
+      removeClass($appRulesElem, 'hide');
 
       setTimeout(() => removeClass($appNode, 'won'), 70);
     }
@@ -433,8 +439,8 @@ const appPuzzle = () => {
       
       if (shuffleCount >= maxShuffleCount) {
         addClass($appNodeLock, 'hide');
-        addClass($appRules, 'hide');
-        removeClass($appBox, 'hide');
+        addClass($appRulesElem, 'hide');
+        removeClass($appBoxElem, 'hide');
 
         resetTimer();
         clearInterval(timer);
@@ -456,11 +462,12 @@ const appPuzzle = () => {
     $appCounter.textContent = data.count;
 
     removeNotificationRecord();
-    removeAnimateOpacity([$appRecord, $appTime, $appActual]);
+    removeAnimateOpacity([$appRecordElem, $appTimeElem, $appActualElem]);
     
     clearInterval(timer);
 
     if (shuffleCount === 0) {
+      animateShuffleButton();
       resetCurrentTime($startAudio);
       audioPlay($startAudio);
       startingGame();

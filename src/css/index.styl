@@ -280,14 +280,14 @@ html
 
     &__puzzle--shuffle
     {
+        width 120px;
+        height 45px;
         font 1.125rem/1.4 'Playfair Display', serif;
         font-weight 400;
         margin-top 1.325rem;
-        padding 0.5rem 2rem;
         background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
-        border 1px solid rgb(250, 255, 175);
-        border-radius 2px;
+        text-align center;
         position relative;
         overflow hidden;
         z-index 1;
@@ -303,12 +303,34 @@ html
             transform translate(-50%,-50%);
             z-index -1;
             background: linear-gradient(0deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
-            transition all .5s ease;
+            transition 1s;
         }
 
-        &:hover:before
+        &.animate-btn:before
         {
             width 100%;
+        }
+
+        & svg 
+        {
+            position absolute;
+            left 0;
+            top 0;
+        }
+
+        & svg rect 
+        {
+            stroke rgb(250, 255, 175);
+            stroke-width 1;
+            stroke-dasharray 400, 0;
+            transition 1s;
+        }
+
+        &.animate-btn svg rect
+        {
+            stroke-width 3;
+            stroke-dasharray 35, 232.5;
+            stroke-dashoffset 60;
         }
     }
 

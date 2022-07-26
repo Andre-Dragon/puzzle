@@ -17,12 +17,13 @@ var appPuzzle = function appPuzzle() {
   var $appRecordCount = document.getElementById('app__record--count');
   var $appRecordTime = document.getElementById('app__record--time');
   var $appItemsNodes = Array.from($appNode.querySelectorAll('.app__puzzle--btn'));
-  var $appRules = document.querySelector('.app__rules');
-  var $appBox = document.querySelector('.app__box');
-  var $appPublick = document.querySelector('.app__puzzle--public');
-  var $appRecord = document.querySelector('.app__record');
-  var $appTime = document.querySelector('.app__record--time');
-  var $appActual = document.querySelector('.app__actual'); // audio
+  var $appShuffleElem = document.querySelector('.app__puzzle--shuffle');
+  var $appRulesElem = document.querySelector('.app__rules');
+  var $appBoxElem = document.querySelector('.app__box');
+  var $appPublickElem = document.querySelector('.app__puzzle--public');
+  var $appRecordElem = document.querySelector('.app__record');
+  var $appTimeElem = document.querySelector('.app__record--time');
+  var $appActualElem = document.querySelector('.app__actual'); // audio
 
   var $validAudio = new Audio('./audio/valid.mp3');
   var $noValidAudio = new Audio('./audio/no-valid.mp3');
@@ -111,10 +112,10 @@ var appPuzzle = function appPuzzle() {
   };
 
   var notificationRecord = function notificationRecord(text) {
-    $appPublick.textContent = text;
-    addClass($appPublick, 'open');
+    $appPublickElem.textContent = text;
+    addClass($appPublickElem, 'open');
     setTimeout(function () {
-      return removeClass($appPublick, 'open');
+      return removeClass($appPublickElem, 'open');
     }, 5000);
   };
 
@@ -137,6 +138,13 @@ var appPuzzle = function appPuzzle() {
     }
   };
 
+  var animateShuffleButton = function animateShuffleButton() {
+    addClass($appShuffleElem, 'animate-btn');
+    setTimeout(function () {
+      removeClass($appShuffleElem, 'animate-btn');
+    }, 1150);
+  };
+
   var hideItemsLast = function hideItemsLast() {
     $appItemsNodes[countItems - 1].style.display = 'none';
   };
@@ -154,8 +162,8 @@ var appPuzzle = function appPuzzle() {
   };
 
   var removeNotificationRecord = function removeNotificationRecord() {
-    if ($appPublick.classList.contains('open')) {
-      removeClass($appPublick, 'open');
+    if ($appPublickElem.classList.contains('open')) {
+      removeClass($appPublickElem, 'open');
     }
   };
 
@@ -266,7 +274,7 @@ var appPuzzle = function appPuzzle() {
   var limitTimeGame = function limitTimeGame() {
     if (data.ms === data.limit) {
       notificationRecord('Лимит по времени исчерпан!');
-      addClass($appActual, 'animate-opacity');
+      addClass($appActualElem, 'animate-opacity');
       resetTimer();
       data.count = 0;
       data.time = '00:00:00';
@@ -281,7 +289,7 @@ var appPuzzle = function appPuzzle() {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Рекорд установлен!');
-      addClass($appRecord, 'animate-opacity');
+      addClass($appRecordElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
 
@@ -289,13 +297,13 @@ var appPuzzle = function appPuzzle() {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Новый рекорд!');
-      addClass($appRecord, 'animate-opacity');
+      addClass($appRecordElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
 
     if (data.count >= storage.count && storage.count > 0) {
       notificationRecord('Рекорд не побит!');
-      addClass($appActual, 'animate-opacity');
+      addClass($appActualElem, 'animate-opacity');
       audioPlay($wonAudio);
     }
 
@@ -303,7 +311,7 @@ var appPuzzle = function appPuzzle() {
       localStorage.setItem('data', JSON.stringify(data));
       recordResult();
       notificationRecord('Время улучшено!');
-      addClass($appTime, 'animate-opacity');
+      addClass($appTimeElem, 'animate-opacity');
       audioPlay($recordAudio);
     }
   };
@@ -340,8 +348,8 @@ var appPuzzle = function appPuzzle() {
       $appResultCount.textContent = data.count;
       $appResultTime.textContent = data.time;
       removeClass($appNodeLock, 'hide');
-      addClass($appBox, 'hide');
-      removeClass($appRules, 'hide');
+      addClass($appBoxElem, 'hide');
+      removeClass($appRulesElem, 'hide');
       setTimeout(function () {
         return removeClass($appNode, 'won');
       }, 70);
@@ -474,8 +482,8 @@ var appPuzzle = function appPuzzle() {
 
       if (shuffleCount >= maxShuffleCount) {
         addClass($appNodeLock, 'hide');
-        addClass($appRules, 'hide');
-        removeClass($appBox, 'hide');
+        addClass($appRulesElem, 'hide');
+        removeClass($appBoxElem, 'hide');
         resetTimer();
         clearInterval(timer);
         clearInterval(interval);
@@ -492,10 +500,11 @@ var appPuzzle = function appPuzzle() {
     data.count = 0;
     $appCounter.textContent = data.count;
     removeNotificationRecord();
-    removeAnimateOpacity([$appRecord, $appTime, $appActual]);
+    removeAnimateOpacity([$appRecordElem, $appTimeElem, $appActualElem]);
     clearInterval(timer);
 
     if (shuffleCount === 0) {
+      animateShuffleButton();
       resetCurrentTime($startAudio);
       audioPlay($startAudio);
       startingGame();
