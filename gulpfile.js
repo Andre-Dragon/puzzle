@@ -23,6 +23,7 @@ const srcPug = 'src/**/*.pug';
 const srcJS = 'src/**/*.js';
 const srcSVG = 'src/assets/*.svg';
 const srcImages = ['src/**/*.svg', 'src/**/*.jpg', 'src/**/*.gif', 'src/**/*.png'];
+const srcFonts = ['src/**/*.woff2', 'src/**/*.woff'];
 
 function server() {
     return gulpConnect.server({
@@ -100,6 +101,12 @@ function images() {
         .pipe(gulpif(!isProduction, gulpConnect.reload()));
 }
 
+function fonts() {
+    return gulp.src(srcFonts)
+        .pipe(gulp.dest(outputDir))
+        .pipe(gulpif(!isProduction, gulpConnect.reload()));
+}
+
 function js() {
     return gulp.src(srcJS)
         .pipe(sourcemaps.init())
@@ -117,17 +124,18 @@ function watch() {
     gulp.watch(srcSVG, gulp.series(svg));
     gulp.watch(srcStylus, gulp.series(stylus));
     gulp.watch(srcImages, gulp.series(images));
+    gulp.watch(srcFonts, gulp.series(fonts));
     gulp.watch(srcPug, gulp.series(pug));
 }
 
 exports.default = gulp.parallel(
     watch,
-    gulp.series(clean, js, svg, pug, stylus, images, server)
+    gulp.series(clean, js, svg, pug, stylus, images, fonts, server)
 );
 exports.server = server;
 exports.clean = clean;
-exports.build = gulp.series(clean, js, svg, pug, images, stylus);
+exports.build = gulp.series(clean, js, svg, pug, images, fonts, stylus);
 exports.dev = gulp.parallel(
     watch,
-    gulp.series(clean, js, pug, svg, stylus, images, server)
+    gulp.series(clean, js, pug, svg, stylus, images, fonts, server)
 );

@@ -1,4 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
+@font-face 
+{
+    font-family 'Open Sans';
+    src url('../fonts/OpenSans-Regular.woff2') format('woff2'),
+        url('../fonts/OpenSans-Regular.woff') format('woff');
+    font-weight normal;
+    font-style normal;
+}
+
+@font-face 
+{
+    font-family 'Open Sans';
+    src url('../fonts/OpenSans-Bold.woff2') format('woff2'),
+        url('../fonts/OpenSans-Bold.woff') format('woff');
+    font-weight 700;
+    font-style normal;
+}
+
+@font-face 
+{
+    font-family: 'Playfair Display';
+    src: url('../fonts/PlayfairDisplay-Regular.woff2') format('woff2'),
+            url('../fonts/PlayfairDisplay-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face 
+{
+    font-family: 'Playfair Display';
+    src: url('../fonts/PlayfairDisplay-Bold.woff2') format('woff2'),
+            url('../fonts/PlayfairDisplay-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
 
 body,
 html 
@@ -97,7 +134,7 @@ html
     &__title 
     {
         font 2.5rem/1.2 'Playfair Display', serif;
-        font-weight 600;
+        font-weight 700;
         text-align center;
         margin-bottom 1rem;
     }
@@ -150,8 +187,8 @@ html
     &__indicator
     {
         display inline-flex;
-        font 1.125rem 'Playfair Display', serif;
-        font-weight 600;
+        font 1rem 'Rye', cursive;
+        font-weight 400;
         line-height 1.6;
     }
 
@@ -275,15 +312,16 @@ html
 
     &__puzzle--total
     {
-        font 1.125rem 'Playfair Display', serif;
+        font 1rem 'Rye', cursive;
+        font-weight 400;
     }
 
     &__puzzle--shuffle
     {
-        width 120px;
-        height 45px;
+        width 140px;
+        height 40px;
         font 1.125rem/1.4 'Playfair Display', serif;
-        font-weight 400;
+        font-weight 700;
         margin-top 1.325rem;
         background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
@@ -330,7 +368,7 @@ html
         {
             stroke-width 3;
             stroke-dasharray 0, 230;
-            stroke-dashoffset 65;
+            stroke-dashoffset 50;
         }
     }
 
@@ -349,7 +387,7 @@ html
         left 0;
         width 25%;
         height 25%;
-        font 2rem/1.4 'Playfair Display', serif;
+        font 2rem/1.4 'Rye', cursive;
         font-weight 400;
         background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
