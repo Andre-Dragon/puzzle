@@ -1,46 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
 
-@font-face 
-{
-    font-family 'Open Sans';
-    src url('../fonts/OpenSans-Regular.woff2') format('woff2'),
-        url('../fonts/OpenSans-Regular.woff') format('woff');
-    font-weight normal;
-    font-style normal;
-}
-
-@font-face 
-{
-    font-family 'Open Sans';
-    src url('../fonts/OpenSans-Bold.woff2') format('woff2'),
-        url('../fonts/OpenSans-Bold.woff') format('woff');
-    font-weight 700;
-    font-style normal;
-}
-
-@font-face 
-{
-    font-family: 'Playfair Display';
-    src: url('../fonts/PlayfairDisplay-Regular.woff2') format('woff2'),
-            url('../fonts/PlayfairDisplay-Regular.woff') format('woff');
+@font-face {
+    font-family: 'AA Haymaker';
+    src: url('../fonts/AAHaymaker.woff2') format('woff2'),
+        url('../fonts/AAHaymaker.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
-
-@font-face 
-{
-    font-family: 'Playfair Display';
-    src: url('../fonts/PlayfairDisplay-Bold.woff2') format('woff2'),
-            url('../fonts/PlayfairDisplay-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
+    font-display: swap;
 }
 
 
-body,
-html 
+html,
+body 
 {
-    font 16px/1.4 'Open Sans', sans-serif;
+    font 16px 'AA Haymaker';
     font-weight 400;
 	line-height 1.5;
     background: linear-gradient(90deg, rgb(17, 5, 59), rgb(30, 11, 99), rgb(17, 5, 59));
@@ -133,7 +106,7 @@ html
 
     &__title 
     {
-        font 2.5rem/1.2 'Playfair Display', serif;
+        font 2.25rem 'AA Haymaker';
         font-weight 700;
         text-align center;
         margin-bottom 1rem;
@@ -147,6 +120,7 @@ html
         max-width 300px;
         width 100%;
         height 28px;
+        font 1rem 'AA Haymaker';
         position relative;
     }
 
@@ -179,7 +153,7 @@ html
 
     &__total
     {
-        font 1rem 'Open Sans', sans-serif;
+        font 1rem 'AA Haymaker';
         font-weight 400;
         text-align center;
     }
@@ -318,10 +292,10 @@ html
 
     &__puzzle--shuffle
     {
-        width 140px;
-        height 40px;
-        font 1.125rem/1.4 'Playfair Display', serif;
-        font-weight 700;
+        width 130px;
+        height 43px;
+        font 1rem 'AA Haymaker';
+        font-weight 600;
         margin-top 1.325rem;
         background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
@@ -366,9 +340,10 @@ html
 
         &.animate-btn svg rect
         {
+            stroke rgb(30, 11, 99);
             stroke-width 3;
             stroke-dasharray 0, 230;
-            stroke-dashoffset 50;
+            stroke-dashoffset 58;
         }
     }
 
@@ -387,7 +362,7 @@ html
         left 0;
         width 25%;
         height 25%;
-        font 2rem/1.4 'Rye', cursive;
+        font 2rem 'Rye', cursive;
         font-weight 400;
         background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
         color rgb(250, 255, 175);
@@ -418,6 +393,7 @@ html
         display flex;
         align-items center;
         justify-content center;
+        font 1rem 'AA Haymaker';
         transition: transform 0.5s;
     }
 
@@ -525,5 +501,54 @@ html
     } 
 }
 
+/** Media */
+@media (max-width: 360px)
+{
+    .app
+    {
+        &__title
+        {
+            font-size 2rem;
+        }
+
+        &__discription,
+        &__total,
+        &__indicator,
+        &__puzzle--name,
+        &__puzzle--result,
+        &__puzzle--shuffle,
+        &__puzzle--public
+        {
+            font-size 0.875rem;
+        }
+
+        &__counter 
+        {
+            width 40px;
+        }
+
+        &__timer
+        {
+            width 62px;
+        }
+
+        &__puzzle--btn
+        {
+            font-size 1.5rem;
+        }
+
+        &__puzzle--shuffle 
+        {
+            width 110px;
+            height 38px;
+
+            & svg
+            {
+                width 110px;
+                height 38px;
+            }
+        }
+    }
+}
 
 

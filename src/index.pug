@@ -4,11 +4,13 @@ html(lang="ru")
         meta(charset="utf-8")
         title Puzzle
 
+        meta(name="description" content="Квадратики с номерами расставлены по полю в случайном порядке. Цель игры – перемещать квадратики, упорядочивать их по номерам, используя свободное «окно», совершив при этом наименьшее количество ходов.")
         meta(property="og:type" content="website")
         meta(property="og:title" content="«Пятнашки»")
-        meta(property="og:description" content="Квадратики с номерами расставлены по полю в случайном порядке. Цель игры – перемещать квадратики, упорядочивать их по номерам, используя свободное «окно», совершив при этом наименьшее количество ходов.")
+        meta(property="og:description" content="Игра «Пятнашки» - популярная головоломка")
         meta(property="og:url" content="https://andre-dragon.github.io/fifteen-puzzle/")
-        meta(property="og:image" content="https://ic.wampi.ru/2022/07/27/fifteen.jpg")
+        meta(property="og:image" content="https://ie.wampi.ru/2022/07/28/fifteen.png")
+        //- meta(property="og:image" content="https://ie.wampi.ru/2022/07/28/fifteen.png")
 
         link(rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png")
         link(rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png")
@@ -80,8 +82,8 @@ html(lang="ru")
                                                 .app__puzzle--result.app__puzzle--total#app__record--count 0
                                                 .app__puzzle--result.app__puzzle--total.app__record--time#app__record--time 00:00:00
                                 button.app__puzzle--shuffle#app__shuffle Играть
-                                    svg(width="140" height="40" viewBox="0 0 140 40" xmlns="http://www.w3.org/2000/svg")
-                                        rect(x="0" y="0" fill="none" width="140" height="40")
-                        .app__puzzle--public Новый рекорд
+                                    svg(width="130" height="43" viewBox="0 0 130 43" xmlns="http://www.w3.org/2000/svg")
+                                        rect(x="0" y="0" fill="none" width="130" height="43")
+                        .app__puzzle--public
 
         script(src="./js/index.js")
