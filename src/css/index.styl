@@ -292,30 +292,42 @@ body
 
     &__puzzle--shuffle
     {
-        width 130px;
-        height 43px;
+        width: 128px;
+        height: 45px;
         font 1rem 'AA Haymaker';
         font-weight 600;
-        margin-top 1.325rem;
-        background: linear-gradient(90deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
-        color rgb(250, 255, 175);
-        text-align center;
-        position relative;
-        overflow hidden;
-        z-index 1;
+        margin-top: 1.325rem;
+        background: -webkit-gradient(linear, left top, right top, from(#000), color-stop(#230b10), color-stop(#331016), color-stop(#230b10), to(#000));
+        background: -webkit-linear-gradient(left, #000, #230b10, #331016, #230b10, #000);
+        background: -o-linear-gradient(left, #000, #230b10, #331016, #230b10, #000);
+        background: linear-gradient(90deg, #000, #230b10, #331016, #230b10, #000);
+        color: #faffaf;
+        border: 1px solid #faffaf;
+        box-shadow: 0 0 4px #faffaf;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
 
         &:before
         {
-            content '';
-            width 0%;
-            height 100%;
-            position absolute;
-            top 50%;
-            left 50%;
-            transform translate(-50%,-50%);
-            z-index -1;
-            background: linear-gradient(0deg, rgb(0, 0, 0), rgb(35, 11, 16), rgb(51, 16, 22), rgb(35, 11, 16), rgb(0, 0, 0));
-            transition 1s;
+            content: '';
+            width: 0%;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+                -o-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+            z-index: -1;
+            background: -webkit-gradient(linear, left bottom, left top, from(#000), color-stop(#230b10), color-stop(#331016), color-stop(#230b10), to(#000));
+            background: -webkit-linear-gradient(bottom, #000, #230b10, #331016, #230b10, #000);
+            background: -o-linear-gradient(bottom, #000, #230b10, #331016, #230b10, #000);
+            background: linear-gradient(0deg, #000, #230b10, #331016, #230b10, #000);
+            -webkit-transition: 1s;
+            -o-transition: 1s;
+            transition: 1s;
         }
 
         &.animate-btn:before
@@ -323,27 +335,27 @@ body
             width 100%;
         }
 
-        & svg 
-        {
-            position absolute;
-            left 0;
-            top 0;
+        & svg {
+            position: absolute;
+            top: 3px;
+            left: 3px;
         }
 
         & svg rect 
         {
-            stroke rgb(250, 255, 175);
-            stroke-width 1;
-            stroke-dasharray 400, 0;
-            transition 1s;
+            stroke: #faffaf;
+            stroke-width: 1;
+            stroke-dasharray: 400, 0;
+            -webkit-transition: 1s;
+            -o-transition: 1s;
+            transition: 1s;
         }
 
         &.animate-btn svg rect
         {
-            stroke rgb(30, 11, 99);
-            stroke-width 3;
-            stroke-dasharray 0, 230;
-            stroke-dashoffset 58;
+            stroke-width: 3;
+            stroke-dasharray: 0, 230;
+            stroke-dashoffset: 80;
         }
     }
 
@@ -544,8 +556,10 @@ body
 
             & svg
             {
-                width 110px;
-                height 38px;
+                width 104px;
+                height 32px;
+                top 2px;
+                left 2px;
             }
         }
     }
